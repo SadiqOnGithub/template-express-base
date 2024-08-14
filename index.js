@@ -1,26 +1,36 @@
 import dotenv from "dotenv";
-import mongoose from 'mongoose';
 
 import app from "./app.js";
 import dbConnect from "#db";
+import { errorHandler } from "#errors/errorHandler";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 8080;
 
-dbConnect();
 
-
-// Error handling middleware should have a response sent or passed to next error handler
-// app.use(errorHandler);
-
-mongoose.connection.once('open', () => {
-  console.log(`Connected to MongoDB`);
-  // serve listening only after the mongoDB is connected
-  app.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));
+// catching error that is thrown in the synchronous part of your application and it's not caught or handled anywhere in the call stack.
+process.on('uncaughtException', err => {
+  console.error('UNCAUGHT EXCEPTION! 💥 Shutting down...');
+  console.error(err.name, err.message);
+  process.exit(1);
 });
 
-mongoose.connection.on('error', err => {
-  console.error(err);
-  // log the error
-});
+
+dbConnect()
+  .then(() => {
+    const server = app.listen(PORT, () => {
+      console.log(`Server started on http://localhost:${PORT}`);
+    });
+
+    process.on('unhandledRejection', err => {
+      console.error('UNHANDLED REJECTION! 💥 Shutting down...');
+      console.error(err.name, err.message);
+      server.close(() => {
+        process.exit(1);
+      });
+    });
+  });
+
+
+app.use(errorHandler);

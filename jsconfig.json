@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "#errors/*": ["./errors/*"],
       "#routes/*": ["./routes/*"],
       "#models/*": ["./models/*"],
       "#controllers/*": ["./controllers/*"],

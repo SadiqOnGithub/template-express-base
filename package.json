@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "imports": {
+    "#errors/*": "./errors/*.js",
     "#routes/*": "./routes/*.js",
     "#models/*": "./models/*.js",
     "#controllers/*": "./controllers/*.js",
