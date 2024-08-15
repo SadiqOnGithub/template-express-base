@@ -15,7 +15,8 @@
   },
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "tree": "tree -L 2 -I 'node_modules'"
   },
   "repository": {
     "type": "git",
