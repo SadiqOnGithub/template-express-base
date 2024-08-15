@@ -4,6 +4,6 @@ import { rootRouter } from '#routes';
 
 const app = express();
 
-app.get('/', rootRouter)
+app.get('/', rootRouter);
 
 export default app;

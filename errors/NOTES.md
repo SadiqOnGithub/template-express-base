@@ -5,7 +5,7 @@ Certainly! CastError and ValidationError are two common types of errors you migh
 A CastError occurs when Mongoose fails to cast a value to the specified type in your schema. This often happens when you're trying to query the database with an invalid type for a field.
 
 Example:
-Let's say you have a User model with an _id field of type ObjectId:
+Let's say you have a User model with an \_id field of type ObjectId:
 
 ```javascript
 const userSchema = new mongoose.Schema({
@@ -40,18 +40,18 @@ Let's modify our User schema to include some validations:
 
 ```javascript
 const userSchema = new mongoose.Schema({
-  name: { 
-    type: String, 
-    required: true 
+  name: {
+    type: String,
+    required: true
   },
-  email: { 
-    type: String, 
-    required: true, 
-    match: /^\S+@\S+\.\S+$/ 
+  email: {
+    type: String,
+    required: true,
+    match: /^\S+@\S+\.\S+$/
   },
-  age: { 
-    type: Number, 
-    min: 18 
+  age: {
+    type: Number,
+    min: 18
   }
 });
 
@@ -62,17 +62,17 @@ Now, if we try to save a user that doesn't meet these criteria:
 
 ```javascript
 const invalidUser = new User({
-  name: '',  // Empty string, will fail 'required' validation
-  email: 'not-an-email',  // Will fail the email pattern match
-  age: 16  // Will fail the minimum age validation
+  name: '', // Empty string, will fail 'required' validation
+  email: 'not-an-email', // Will fail the email pattern match
+  age: 16 // Will fail the minimum age validation
 });
 
 invalidUser.save((err) => {
   if (err) {
-    console.log(err.name);  // 'ValidationError'
-    console.log(err.errors.name.message);  // 'Path `name` is required.'
-    console.log(err.errors.email.message);  // 'Path `email` is invalid (not-an-email).'
-    console.log(err.errors.age.message);  // 'Path `age` (16) is less than minimum allowed value (18).'
+    console.log(err.name); // 'ValidationError'
+    console.log(err.errors.name.message); // 'Path `name` is required.'
+    console.log(err.errors.email.message); // 'Path `email` is invalid (not-an-email).'
+    console.log(err.errors.age.message); // 'Path `age` (16) is less than minimum allowed value (18).'
   }
 });
 ```
@@ -90,13 +90,13 @@ if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
 This allows you to provide more specific and user-friendly error messages for these common types of errors. For example:
 
 ```javascript
-const handleCastErrorDB = err => {
+const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}.`;
   return new AppError(message, 400);
 };
 
-const handleValidationErrorDB = err => {
-  const errors = Object.values(err.errors).map(el => el.message);
+const handleValidationErrorDB = (err) => {
+  const errors = Object.values(err.errors).map((el) => el.message);
   const message = `Invalid input data. ${errors.join('. ')}`;
   return new AppError(message, 400);
 };
