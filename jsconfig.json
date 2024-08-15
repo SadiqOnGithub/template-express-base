@@ -2,13 +2,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "#routes/*": ["./routes/*"],
+      "#db": ["./db/index.js"],
+      "#errors": ["./errors/index.js"],
+      "#routes": ["./routes/index.js"],
       "#models/*": ["./models/*"],
       "#controllers/*": ["./controllers/*"],
       "#middlewares/*": ["./middlewares/*"],
       "#swagger": ["./swagger/index.js"],
-      "#errors": ["./errors/index.js"],
-      "#db": ["./db/index.js"],
     }
   },
   "exclude": ["node_modules"]
