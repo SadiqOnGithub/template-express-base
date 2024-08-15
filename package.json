@@ -16,7 +16,11 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "tree": "tree -L 2 -I 'node_modules'"
+    "tree": "tree -L 2 -I 'node_modules'",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "**/js": "prettier --write --ignore-unknown"
   },
   "repository": {
     "type": "git",
@@ -41,6 +45,8 @@
     "mongoose": "^8.5.3"
   },
   "devDependencies": {
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.9",
     "nodemon": "^3.1.4",
     "prettier": "3.3.3"
   }
