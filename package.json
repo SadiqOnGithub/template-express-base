@@ -16,11 +16,17 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "tree": "tree -L 2 -I 'node_modules'",
-    "prepare": "husky"
+    "prepare": "husky || true",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "tree": "tree -L 2 -I 'node_modules'"
   },
   "lint-staged": {
-    "**/js": "prettier --write --ignore-unknown"
+    "**/*": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "repository": {
     "type": "git",
@@ -45,9 +51,14 @@
     "mongoose": "^8.5.3"
   },
   "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "eslint": "^9.9.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.9.0",
     "husky": "^9.1.4",
     "lint-staged": "^15.2.9",
     "nodemon": "^3.1.4",
-    "prettier": "3.3.3"
+    "prettier": "^3.3.3"
   }
 }
