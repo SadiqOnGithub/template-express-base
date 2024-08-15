@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 import app from "./app.js";
 import dbConnect from "#db";
-import errorHandler from "#errors/errorHandler.js";
+import { errorHandler } from "#errors";
 
 dotenv.config();
 

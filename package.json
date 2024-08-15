@@ -5,12 +5,12 @@
   "main": "index.js",
   "type": "module",
   "imports": {
-    "#errors/*": "./errors/*",
     "#routes/*": "./routes/*.js",
     "#models/*": "./models/*.js",
     "#controllers/*": "./controllers/*.js",
     "#middlewares/*": "./middlewares/*.js",
     "#swagger": "./swagger/index.js",
+    "#errors": "./errors/index.js",
     "#db": "./db/index.js"
   },
   "scripts": {

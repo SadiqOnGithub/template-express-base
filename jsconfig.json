@@ -2,12 +2,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "#errors/*": ["./errors/*"],
       "#routes/*": ["./routes/*"],
       "#models/*": ["./models/*"],
       "#controllers/*": ["./controllers/*"],
       "#middlewares/*": ["./middlewares/*"],
       "#swagger": ["./swagger/index.js"],
+      "#errors": ["./errors/index.js"],
       "#db": ["./db/index.js"],
     }
   },
