@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "#db": ["./db/index.js"],
+      "#cors": ["./cors/index.js"],
       "#errors": ["./errors/index.js"],
       "#routes": ["./routes/index.js"],
       "#models/*": ["./models/*"],
