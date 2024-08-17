@@ -1,9 +1,9 @@
 import { Router } from 'express'
 
+import { authControllers } from '#controllers'
+
 const router = Router()
 
-router.get('/', (req, res) => {
-  res.send('api is working !!!!!!')
-})
+router.get('/', authControllers.adminLogin)
 
 export default router
