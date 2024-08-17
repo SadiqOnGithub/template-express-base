@@ -16,10 +16,10 @@ const handleJWTError = () => new AppError('Invalid token. Please log in again!',
 const handleJWTExpiredError = () =>
   new AppError('Your token has expired! Please log in again.', 401)
 
-const handleNotBeforeError = (err) => {
-  const message = `Token not active. Please try again after ${err.date}.`
-  return new AppError(message, 401)
-}
+// const handleNotBeforeError = (err) => {
+//   const message = `Token not active. Please try again after ${err.date}.`
+//   return new AppError(message, 401)
+// }
 
 const sendErrorResponse = (err, res, isProduction = false) => {
   if (isProduction) {
@@ -56,7 +56,7 @@ const errorHandler = (err, req, res, next) => {
   if (error.name === 'ValidationError') error = handleValidationErrorDB(error)
   if (error.name === 'JsonWebTokenError') error = handleJWTError()
   if (error.name === 'TokenExpiredError') error = handleJWTExpiredError()
-  if (error.name === 'NotBeforeError') error = handleNotBeforeError(error)
+  // if (error.name === 'NotBeforeError') error = handleNotBeforeError(error)
 
   // Mark known errors as operational
   error.isOperational = error instanceof AppError
