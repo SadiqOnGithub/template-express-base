@@ -36,7 +36,6 @@ const sendErrorResponse = (err, res, isProduction = false) => {
     res.status(err.statusCode).json({
       status: err.status,
       message: err.message,
-      isOperational: err.isOperational, // just for my curiocity
       error: err,
       stack: err.stack,
     })
