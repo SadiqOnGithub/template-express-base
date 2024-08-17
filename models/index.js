@@ -1,1 +1,1 @@
-export { default as Admin } from './Admin.models'
+export { default as Admin } from './Admin.models.js'
