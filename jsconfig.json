@@ -6,9 +6,9 @@
       "#cors": ["./cors/index.js"],
       "#errors": ["./errors/index.js"],
       "#routes": ["./routes/index.js"],
-      "#models/*": ["./models/*"],
-      "#controllers/*": ["./controllers/*"],
-      "#middlewares/*": ["./middlewares/*"],
+      "#models": ["./models/index.js"],
+      "#controllers": ["./controllers/index.js"],
+      "#middlewares": ["./middlewares/index.js"],
       "#swagger": ["./swagger/index.js"]
     }
   },

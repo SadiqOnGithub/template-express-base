@@ -9,9 +9,9 @@
     "#cors": "./cors/index.js",
     "#errors": "./errors/index.js",
     "#routes": "./routes/index.js",
-    "#models/*": "./models/*.js",
-    "#controllers/*": "./controllers/*.js",
-    "#middlewares/*": "./middlewares/*.js",
+    "#models": "./models/index.js",
+    "#controllers": "./controllers/index.js",
+    "#middlewares": "./middlewares/index.js",
     "#swagger": "./swagger/index.js"
   },
   "scripts": {
