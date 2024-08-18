@@ -1,4 +1,3 @@
-import { MongooseError } from 'mongoose'
 import { AppError } from './index.js'
 
 const handleCastErrorDB = (err, name) => {
@@ -53,10 +52,10 @@ const errorHandler = (err, req, res, next) => {
   error.message = err.message
 
   // Apply specific error handling
-  if (err instanceof MongooseError.ValidationError) error = handleValidationErrorDB(error, 'ValidationError') // prettier-ignore
-  if (err instanceof MongooseError.CastError) error = handleCastErrorDB(error, 'CastError')
-  if (error.name === 'JsonWebTokenError') error = handleJWTError('JsonWebTokenError')
-  if (error.name === 'TokenExpiredError') error = handleJWTExpiredError('TokenExpiredError')
+  if (err.name === 'ValidationError') error = handleValidationErrorDB(error, err.name) // prettier-ignore
+  if (err.name === 'CastError') error = handleCastErrorDB(error, err.name)
+  if (err.name === 'JsonWebTokenError') error = handleJWTError(error.name)
+  if (err.name === 'TokenExpiredError') error = handleJWTExpiredError(error.name)
   // if (error.name === 'NotBeforeError') error = handleNotBeforeError(error, 'NotBeforeError')
 
   // Mark known errors as operational
