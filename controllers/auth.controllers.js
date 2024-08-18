@@ -5,12 +5,18 @@ import { Admin } from '#models'
 import { authValidators } from '#validators'
 import jwt from 'jsonwebtoken'
 
-const cookieOptions = (days = 7) => ({
-  httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'none',
-  maxAge: days * 24 * 60 * 60 * 1000, // 7 days
-})
+const cookieOptions = (days = 7) => {
+  const options = {
+    httpOnly: true,
+    maxAge: days * 24 * 60 * 60 * 1000, // 7 days
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    options.secure = true
+    options.sameSite = true
+  }
+  return options
+}
 
 const adminRegister = async (req, res) => {
   // 1. Validate input
