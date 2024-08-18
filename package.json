@@ -11,6 +11,7 @@
     "#routes": "./routes/index.js",
     "#models": "./models/index.js",
     "#controllers": "./controllers/index.js",
+    "#validators": "./validators/index.js",
     "#middlewares": "./middlewares/index.js",
     "#swagger": "./swagger/index.js"
   },
