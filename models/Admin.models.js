@@ -4,8 +4,15 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
 const adminSchema = Schema({
-  username: String,
-  password: String,
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
 })
 
 adminSchema.methods.isPasswordCorrect = async function (password) {
