@@ -118,8 +118,36 @@ const refresh = async (req, res) => {
   res.json({ accessToken })
 }
 
+const adminLogout = async (req, res) => {
+  const refreshToken = req.cookies.jwt
+
+  if (!refreshToken) {
+    // If no refresh token in cookie, no need to do anything
+    return res.sendStatus(204) // No Content
+  }
+
+  // Find the admin with this refresh token
+  const admin = await Admin.findOne({ refreshToken })
+
+  if (!admin) {
+    // If no admin found with this refresh token, clear the cookie anyway
+    res.clearCookie('jwt', cookieOptions())
+    return res.sendStatus(204) // No Content
+  }
+
+  // Delete refresh token in db
+  admin.refreshToken = undefined
+  await admin.save({ validateBeforeSave: false })
+
+  // Clear the cookie
+  res.clearCookie('jwt', cookieOptions())
+
+  res.sendStatus(204) // No Content
+}
+
 export default {
   adminRegister,
   adminLogin,
   refresh,
+  adminLogout,
 }

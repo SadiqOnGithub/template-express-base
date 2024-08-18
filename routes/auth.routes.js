@@ -14,4 +14,6 @@ router.post('/adminLogin', authControllers.adminLogin)
 
 router.get('/refresh', authControllers.refresh)
 
+router.get('/adminLogout', authControllers.adminLogout)
+
 export default router
