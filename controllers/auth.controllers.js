@@ -3,6 +3,55 @@ import { Admin } from '#models'
 import { authValidators } from '#validators'
 import jwt from 'jsonwebtoken'
 
+const cookieOptions = (days = 7) => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'none',
+  maxAge: days * 24 * 60 * 60 * 1000, // 7 days
+})
+
+const adminRegister = async (req, res) => {
+  // 1. Validate input
+  const { error } = authValidators.loginSchemaTesting.validate(req.body)
+  if (error) {
+    throw new AppError(error.details[0].message, 400)
+  }
+
+  const { username, password } = req.body
+
+  // 2. Check if admin already exists
+  const existingAdmin = await Admin.findOne({ username })
+  if (existingAdmin) {
+    throw new AppError('Username already exists', 409)
+  }
+
+  // 3. Create new admin
+  const newAdmin = new Admin({
+    username,
+    password, // password will be hashed by the pre-save hook in the Admin model
+  })
+
+  // 4. Save admin to database
+  await newAdmin.save()
+
+  // 5. Generate tokens
+  const accessToken = newAdmin.generateAccessToken()
+  const refreshToken = newAdmin.generateRefreshToken()
+
+  // 6. Save refresh token to database
+  newAdmin.refreshToken = refreshToken
+  await newAdmin.save({ validateBeforeSave: false })
+
+  // 7. Set refresh token as HTTP-Only cookie
+  res.cookie('jwt', refreshToken, cookieOptions())
+
+  // 8. Send response
+  res.status(201).json({
+    username: newAdmin.username,
+    accessToken,
+  })
+}
+
 const adminLogin = async (req, res) => {
   // 1. Validate input
   const { error } = authValidators.loginSchemaTesting.validate(req.body)
@@ -29,16 +78,11 @@ const adminLogin = async (req, res) => {
   const refreshToken = admin.generateRefreshToken()
 
   // 5. Save refresh token to database (optional, but recommended)
-  // admin.refreshToken = refreshToken
-  // await admin.save({ validateBeforeSave: false })
+  admin.refreshToken = refreshToken
+  await admin.save({ validateBeforeSave: false })
 
   // 6. Set refresh token as HTTP-Only cookie
-  res.cookie('jwt', refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'none',
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  })
+  res.cookie('jwt', refreshToken, cookieOptions())
 
   // 7. Send response
   res.status(200).json({
@@ -67,6 +111,7 @@ const refresh = async (req, res) => {
 }
 
 export default {
+  adminRegister,
   adminLogin,
   refresh,
 }
