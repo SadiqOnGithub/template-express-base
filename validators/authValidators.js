@@ -1,6 +1,5 @@
 import Joi from 'joi'
 
-// eslint-disable-next-line no-unused-vars
 const loginSchema = Joi.object({
   username: Joi.string().min(3).max(30).required().messages({
     'string.empty': 'Username is required',
@@ -22,6 +21,7 @@ const loginSchemaTesting = Joi.object({
   }),
 })
 
-export const validateLoginInput = (data) => {
-  return loginSchemaTesting.validate(data)
+export default {
+  loginSchema,
+  loginSchemaTesting,
 }

@@ -1,11 +1,11 @@
 import { AppError } from '#errors'
 import { Admin } from '#models'
-import { validateLoginInput } from '#validators'
+import { authValidators } from '#validators'
 import jwt from 'jsonwebtoken'
 
 const adminLogin = async (req, res) => {
   // 1. Validate input
-  const { error } = validateLoginInput(req.body)
+  const { error } = authValidators.loginSchemaTesting.validate(req.body)
   if (error) {
     throw new AppError(error.details[0].message, 400)
   }

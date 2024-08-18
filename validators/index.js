@@ -1,1 +1,1 @@
-export { validateLoginInput } from './authValidators.js'
+export { default as authValidators } from './authValidators.js'
