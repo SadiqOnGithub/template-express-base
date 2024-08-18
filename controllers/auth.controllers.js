@@ -145,9 +145,21 @@ const adminLogout = async (req, res) => {
   res.sendStatus(204) // No Content
 }
 
+const getCurrentAdmin = async (req, res) => {
+  // 1. Find the admin
+  const admin = await Admin.findById(req.id).select('-password -refreshToken')
+  if (!admin) {
+    throw new AppError('Admin not found', 404)
+  }
+
+  // 2. Send the response
+  res.status(200).json({ username: admin.username })
+}
+
 export default {
   adminRegister,
   adminLogin,
   refresh,
   adminLogout,
+  getCurrentAdmin,
 }
