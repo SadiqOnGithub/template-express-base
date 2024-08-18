@@ -4,7 +4,7 @@ import { authControllers } from '#controllers'
 
 const router = Router()
 
-router.get('/', authControllers.adminLogin)
+router.get('/adminLogin', authControllers.adminLogin)
 
 router.get('/refresh', authControllers.refresh)
 
