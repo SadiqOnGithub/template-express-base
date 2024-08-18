@@ -1,24 +1,25 @@
+import { MongooseError } from 'mongoose'
 import { AppError } from './index.js'
 
-const handleCastErrorDB = (err) => {
+const handleCastErrorDB = (err, name) => {
   const message = `Invalid ${err.path}: ${err.value}.`
-  return new AppError(message, 400)
+  return new AppError(message, 400, name)
 }
 
-const handleValidationErrorDB = (err) => {
+const handleValidationErrorDB = (err, name) => {
   const errors = Object.values(err.errors).map((el) => el.message)
   const message = `Invalid input data. ${errors.join('. ')}`
-  return new AppError(message, 400)
+  return new AppError(message, 400, name)
 }
 
-const handleJWTError = () => new AppError('Invalid token. Please log in again!', 401)
+const handleJWTError = (name) => new AppError('Invalid token. Please log in again!', 401, name)
 
-const handleJWTExpiredError = () =>
-  new AppError('Your token has expired! Please log in again.', 401)
+const handleJWTExpiredError = (name) =>
+  new AppError('Your token has expired! Please log in again.', 401, name)
 
-// const handleNotBeforeError = (err) => {
+// const handleNotBeforeError = (err, name) => {
 //   const message = `Token not active. Please try again after ${err.date}.`
-//   return new AppError(message, 401)
+//   return new AppError(message, 401, name)
 // }
 
 const sendErrorResponse = (err, res, isProduction = false) => {
@@ -36,6 +37,7 @@ const sendErrorResponse = (err, res, isProduction = false) => {
     res.status(err.statusCode).json({
       status: err.status,
       message: err.message,
+      name: err.name,
       error: err,
       stack: err.stack,
     })
@@ -51,11 +53,11 @@ const errorHandler = (err, req, res, next) => {
   error.message = err.message
 
   // Apply specific error handling
-  if (error.name === 'CastError') error = handleCastErrorDB(error)
-  if (error.name === 'ValidationError') error = handleValidationErrorDB(error)
-  if (error.name === 'JsonWebTokenError') error = handleJWTError()
-  if (error.name === 'TokenExpiredError') error = handleJWTExpiredError()
-  // if (error.name === 'NotBeforeError') error = handleNotBeforeError(error)
+  if (err instanceof MongooseError.ValidationError) error = handleValidationErrorDB(error, 'ValidationError') // prettier-ignore
+  if (err instanceof MongooseError.CastError) error = handleCastErrorDB(error, 'CastError')
+  if (error.name === 'JsonWebTokenError') error = handleJWTError('JsonWebTokenError')
+  if (error.name === 'TokenExpiredError') error = handleJWTExpiredError('TokenExpiredError')
+  // if (error.name === 'NotBeforeError') error = handleNotBeforeError(error, 'NotBeforeError')
 
   // Mark known errors as operational
   error.isOperational = error instanceof AppError
