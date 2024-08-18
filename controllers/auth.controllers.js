@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config()
 import { AppError } from '#errors'
 import { Admin } from '#models'
 import { authValidators } from '#validators'
@@ -20,7 +22,7 @@ const adminRegister = async (req, res) => {
   const { username, password } = req.body
 
   // 2. Check if admin already exists
-  const existingAdmin = await Admin.findOne({ username })
+  const existingAdmin = await Admin.findOne({ username }).collation({ locale: 'en', strength: 2 })
   if (existingAdmin) {
     throw new AppError('Username already exists', 409)
   }

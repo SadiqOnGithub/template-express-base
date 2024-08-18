@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config()
 import { model, Schema } from 'mongoose'
 
 import jwt from 'jsonwebtoken'
